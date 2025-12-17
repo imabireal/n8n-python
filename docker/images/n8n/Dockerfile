@@ -26,6 +26,14 @@ COPY docker/images/n8n/docker-entrypoint.sh /
 # This version of npm has the fix for glob
 RUN npm install -g npm@11.6.4
 
+FROM system-deps AS runtime
+
+USER root
+
+# Install Python 3 and pip
+# Alpine package names are python3 and py3-pip
+RUN apk add --update --no-cache python3 py3-pip
+
 RUN cd /usr/local/lib/node_modules/n8n && \
 		npm rebuild sqlite3 && \
 		ln -s /usr/local/lib/node_modules/n8n/bin/n8n /usr/local/bin/n8n && \
